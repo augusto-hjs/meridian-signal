@@ -1,0 +1,54 @@
+{
+  "generated_for": "Meridian product team — competitive & industry radar",
+  "note": "Fictional source items (competitor changelogs + industry news) used to demonstrate a stateful monitoring workflow. Add a new item and re-run to see dedup surface only what's new.",
+  "items": [
+    {
+      "id": "loopwork-2026-07-02",
+      "source": "Loopwork Changelog",
+      "title": "Loopwork ships AI standup summaries",
+      "url": "https://loopwork.example/changelog/ai-standups",
+      "published": "2026-07-02",
+      "content": "Loopwork now auto-generates daily standup summaries from task activity, delivered per-team to Slack. Positioned as a way to cut status meetings."
+    },
+    {
+      "id": "cardinal-2026-07-05",
+      "source": "Cardinal Analytics Blog",
+      "title": "Cardinal adds warehouse-native dashboards",
+      "url": "https://cardinal.example/blog/warehouse-native",
+      "published": "2026-07-05",
+      "content": "Cardinal Analytics launched dashboards that query Snowflake and BigQuery directly, removing the sync step and cutting dashboard latency to near real-time."
+    },
+    {
+      "id": "tasklet-2026-07-08",
+      "source": "Tasklet Release Notes",
+      "title": "Tasklet introduces usage-based pricing",
+      "url": "https://tasklet.example/releases/usage-pricing",
+      "published": "2026-07-08",
+      "content": "Tasklet moved from per-seat to usage-based pricing (billed on active automations), undercutting seat-heavy competitors for small teams."
+    },
+    {
+      "id": "industry-2026-07-09",
+      "source": "SaaS Weekly",
+      "title": "Buyers increasingly expect native AI, not add-ons",
+      "url": "https://saasweekly.example/native-ai-expectations",
+      "published": "2026-07-09",
+      "content": "A survey of B2B software buyers finds AI features are now table stakes; teams penalize products that gate AI behind a premium tier."
+    },
+    {
+      "id": "loopwork-2026-07-11",
+      "source": "Loopwork Changelog",
+      "title": "Loopwork opens a public API for automations",
+      "url": "https://loopwork.example/changelog/public-api",
+      "published": "2026-07-11",
+      "content": "Loopwork released a public REST API with webhooks and an automations SDK, targeting teams that want to build custom workflows."
+    },
+    {
+      "id": "cardinal-2026-07-12",
+      "source": "Cardinal Analytics Blog",
+      "title": "Cardinal SOC 2 Type II and HIPAA now available",
+      "url": "https://cardinal.example/blog/compliance",
+      "published": "2026-07-12",
+      "content": "Cardinal Analytics announced SOC 2 Type II and HIPAA compliance, opening the door to healthcare and regulated-industry buyers."
+    }
+  ]
+}
