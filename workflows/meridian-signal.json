@@ -1,0 +1,28 @@
+{
+  "name": "Meridian Signal",
+  "settings": { "executionOrder": "v1" },
+  "connections": {
+    "Run Now": { "main": [[{ "node": "Fetch Sources", "type": "main", "index": 0 }]] },
+    "Weekly Scan": { "main": [[{ "node": "Fetch Sources", "type": "main", "index": 0 }]] },
+    "Fetch Sources": { "main": [[{ "node": "Get Seen Items", "type": "main", "index": 0 }]] },
+    "Get Seen Items": { "main": [[{ "node": "Select New", "type": "main", "index": 0 }]] },
+    "Select New": { "main": [[{ "node": "Save Item", "type": "main", "index": 0 }, { "node": "Aggregate Items", "type": "main", "index": 0 }]] },
+    "Aggregate Items": { "main": [[{ "node": "Write Digest", "type": "main", "index": 0 }]] },
+    "Write Digest": { "main": [[{ "node": "Save Digest", "type": "main", "index": 0 }]] },
+    "Digest Model": { "ai_languageModel": [[{ "node": "Write Digest", "type": "ai_languageModel", "index": 0 }]] }
+  },
+  "nodes": [
+    { "name": "Run Now", "type": "n8n-nodes-base.manualTrigger", "typeVersion": 1, "position": [32, -304], "parameters": {} },
+    { "name": "Weekly Scan", "type": "n8n-nodes-base.scheduleTrigger", "typeVersion": 1.3, "position": [32, -112], "parameters": { "rule": { "interval": [{ "field": "weeks", "triggerAtDay": [1], "triggerAtHour": 8 }] } } },
+    { "name": "Fetch Sources", "type": "n8n-nodes-base.httpRequest", "typeVersion": 4.4, "position": [256, -208], "parameters": { "method": "GET", "url": "https://raw.githubusercontent.com/augusto-hjs/meridian-signal/main/sources/feed.json", "options": { "response": { "response": { "responseFormat": "json" } } } } },
+    { "name": "Get Seen Items", "type": "n8n-nodes-base.supabase", "typeVersion": 1, "position": [480, -208], "alwaysOutputData": true, "parameters": { "resource": "row", "operation": "getAll", "tableId": "signal_items", "returnAll": true, "filterType": "none" } },
+    { "name": "Select New", "type": "n8n-nodes-base.code", "typeVersion": 2, "position": [704, -208], "parameters": { "mode": "runOnceForAllItems", "jsCode": "const feed = $(\"Fetch Sources\").first().json.items || [];\nconst seen = new Set($input.all().map((i) => i.json.external_id).filter(Boolean));\nconst fresh = feed.filter((it) => !seen.has(it.id));\nreturn fresh.map((it) => ({ json: { external_id: it.id, source: it.source, title: it.title, url: it.url, published: it.published, content: it.content } }));" } },
+    { "name": "Save Item", "type": "n8n-nodes-base.supabase", "typeVersion": 1, "position": [928, -304], "onError": "continueRegularOutput", "parameters": { "resource": "row", "operation": "create", "tableId": "signal_items", "dataToSend": "defineBelow", "fieldsUi": { "fieldValues": [ { "fieldId": "external_id", "fieldValue": "={{ $json.external_id }}" }, { "fieldId": "source", "fieldValue": "={{ $json.source }}" }, { "fieldId": "title", "fieldValue": "={{ $json.title }}" }, { "fieldId": "url", "fieldValue": "={{ $json.url }}" }, { "fieldId": "published", "fieldValue": "={{ $json.published }}" } ] } } },
+    { "name": "Aggregate Items", "type": "n8n-nodes-base.aggregate", "typeVersion": 1, "position": [928, -112], "parameters": { "aggregate": "aggregateAllItemData", "destinationFieldName": "data", "include": "allFields" } },
+    { "name": "Write Digest", "type": "@n8n/n8n-nodes-langchain.chainLlm", "typeVersion": 1.9, "position": [1152, -112], "parameters": { "promptType": "define", "text": "=You are a competitive-intelligence analyst for Meridian, a fictional B2B SaaS (project management + analytics). Write a concise weekly digest for the product team from the items below.\nStart with a one-sentence **TL;DR**, then one bullet per item formatted as:\n- **{source}** — {title}: why it matters to Meridian in <=18 words.\nItems (JSON): {{ JSON.stringify($json.data) }}" } },
+    { "name": "Digest Model", "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi", "typeVersion": 1.3, "position": [1232, 128], "parameters": { "model": { "__rl": true, "mode": "list", "value": "gpt-4o-mini", "cachedResultName": "gpt-4o-mini" }, "options": { "temperature": 0.3 } } },
+    { "name": "Save Digest", "type": "n8n-nodes-base.supabase", "typeVersion": 1, "position": [1504, -112], "parameters": { "resource": "row", "operation": "create", "tableId": "signal_digests", "dataToSend": "defineBelow", "fieldsUi": { "fieldValues": [ { "fieldId": "item_count", "fieldValue": "={{ $(\"Aggregate Items\").item.json.data.length }}" }, { "fieldId": "digest_md", "fieldValue": "={{ $json.text }}" } ] } } },
+    { "name": "Sticky Note Intro", "type": "n8n-nodes-base.stickyNote", "typeVersion": 1, "position": [-80, -480], "parameters": { "content": "## Meridian Signal — stateful monitor\nSchedule (or Run Now) -> fetch sources -> load seen ids -> keep only NEW items -> persist them AND summarize the batch in ONE LLM call -> store the digest. A run with nothing new does nothing and spends nothing.", "height": 712, "width": 940, "color": 4 } },
+    { "name": "Sticky Note Digest", "type": "n8n-nodes-base.stickyNote", "typeVersion": 1, "position": [880, -480], "parameters": { "content": "## One call, only new\nNew items are persisted to signal_items (dedup by DB trigger) and aggregated into a single digest call (cost control). The digest lands in signal_digests, ready to email/Slack.", "height": 712, "width": 852, "color": 3 } }
+  ]
+}

@@ -69,7 +69,14 @@ Detailed operations: [`docs/RUNBOOK.md`](docs/RUNBOOK.md).
 
 ## Results
 
-Verified statefulness on live n8n + Supabase — see the [`eval/`](eval/) note: run 1 digests the new items; run 2 (no new items) writes no digest and spends nothing on the model; adding one item surfaces exactly that item.
+Verified end-to-end on live n8n + Supabase:
+
+| Run | Result |
+|-----|--------|
+| Run 1 (cold, empty state) | 6 items surfaced → **one** LLM call → digest written (`item_count = 6`); 6 rows in `signal_items` |
+| Run 2 (warm, no changes) | 0 new items → **no digest, no LLM call** (zero model spend) |
+
+State after both runs: `signal_items = 6`, `signal_digests = 1` — the second run added nothing. Adding a new item to the feed surfaces only that item on the next run. See [`eval/`](eval/).
 
 ## Stack & credits
 
