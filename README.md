@@ -8,10 +8,16 @@
 ![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat-square&logo=supabase&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT-4F46E5?style=flat-square)
 
-<!-- HERO: schedule runs → only-new items → digest, in ≤10s -->
-![Meridian Signal demo](assets/hero.gif)
+**Sample digest — real output from a live run** (6 competitor/industry items → one LLM call):
 
-▶ **Watch the walkthrough** _(link added when recorded)_
+> **TL;DR:** Key competitors are enhancing AI features, pricing models, and compliance, which could impact Meridian's market positioning.
+>
+> - **Loopwork Changelog** — Loopwork ships AI standup summaries: Automating standup summaries could challenge Meridian's meeting-management features.
+> - **Cardinal Analytics Blog** — Cardinal adds warehouse-native dashboards: Real-time dashboards enhance analytics speed, raising the bar for Meridian's reporting.
+> - **Tasklet Release Notes** — Tasklet introduces usage-based pricing: This model could attract small teams, increasing competition for Meridian's customer base.
+> - **SaaS Weekly** — Buyers increasingly expect native AI, not add-ons: AI features are now table stakes; Meridian must integrate them, not gate them.
+> - **Loopwork Changelog** — Loopwork opens a public API for automations: A public API invites custom workflows, potentially pulling developers away from Meridian.
+> - **Cardinal Analytics Blog** — Cardinal SOC 2 Type II and HIPAA now available: Compliance certifications open regulated industries to Cardinal, pressuring Meridian's reach.
 
 ## Problem → Solution
 
