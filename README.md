@@ -42,6 +42,10 @@ flowchart LR
   I -. duplicate external_id .-> T[DB trigger: no-op]
 ```
 
+**The live workflow in n8n** (every block is documented on the canvas):
+
+![Meridian Signal in n8n](assets/canvas.png)
+
 Full walkthrough: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
 ## Engineering
